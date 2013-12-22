@@ -11,7 +11,7 @@ module QchanWorker
     end
 
     def perform
-      { output: output, status: status.success? }
+      { output: output, status: status.to_i }
     end
 
     private
