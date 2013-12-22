@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe QchanWorker::BuildJob do
+describe QchanWorker::Builder do
   describe "#execute" do
     let(:job) do
       described_class.new(attributes)

@@ -1,7 +1,7 @@
 require "open3"
 
 module QchanWorker
-  class BuildJob
+  class Builder
     def self.perform(*args)
       new(*args).perform
     end

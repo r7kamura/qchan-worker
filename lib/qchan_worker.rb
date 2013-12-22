@@ -1,5 +1,5 @@
 require "resque"
-require "qchan_worker/build_job"
+require "qchan_worker/builder"
 
 module QchanWorker
   class << self
