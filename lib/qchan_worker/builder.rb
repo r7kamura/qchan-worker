@@ -1,3 +1,4 @@
+require "faraday"
 require "open3"
 
 module QchanWorker
@@ -32,6 +33,23 @@ module QchanWorker
     end
 
     def report
+      Faraday.put(api_url, api_parameters, "Content-Type" => "application/json")
+    end
+
+    def api_parameters
+      { exit_status: status.to_i, output: output }.to_json
+    end
+
+    def api_url
+      "http://#{api_host}:#{api_port}/builds/#{@attributes["id"]}"
+    end
+
+    def api_host
+      QchanWorker.configuration.qchan_api_host
+    end
+
+    def api_port
+      QchanWorker.configuration.qchan_api_port
     end
   end
 end
