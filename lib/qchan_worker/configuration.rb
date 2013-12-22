@@ -19,13 +19,27 @@ module QchanWorker
     end
 
     property :qchan_api_scheme do
-      "http"
+      ENV["QCHAN_API_SCHEME"] || "http"
     end
 
-    property :qchan_api_host
+    property :qchan_api_host do
+      ENV["QCHAN_API_HOST"] || "localhost"
+    end
 
     property :qchan_api_port do
-      80
+      ENV["QCHAN_API_PORT"] || "80"
+    end
+
+    property :redis_host do
+      ENV["REDIS_HOST"] || "localhost"
+    end
+
+    property :redis_port do
+      ENV["REDIS_PORT"] || "6379"
+    end
+
+    property :resque_queues do
+      ENV["QUEUE"] || "builds"
     end
 
     private

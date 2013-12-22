@@ -19,13 +19,14 @@ module QchanWorker
     private
 
     def setup_resque_env
-      ENV["QUEUE"] ||= "builds"
-      ENV["REDIS_HOST"] ||= "localhost"
-      ENV["REDIS_PORT"] ||= "6379"
+      ENV["QUEUE"] = QchanWorker.configuration.resque_queues
     end
 
     def setup_resque_host
-      Resque.redis = Redis.new(host: ENV["REDIS_HOST"], port: ENV["REDIS_PORT"])
+      Resque.redis = Redis.new(
+        host: QchanWorker.configuration.redis_host,
+        port: QchanWorker.configuration.redis_port,
+      )
     end
   end
 end

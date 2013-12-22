@@ -17,6 +17,8 @@ module QchanWorker
         http_client.put(url, body, header)
       end
 
+      private
+
       def http_client
         Faraday
       end
@@ -30,7 +32,11 @@ module QchanWorker
       end
 
       def url
-        "http://#{host}:#{port}/builds/#@id"
+        "#{scheme}://#{host}:#{port}/builds/#@id"
+      end
+
+      def scheme
+        QchanWorker.configuration.qchan_api_scheme
       end
 
       def host
