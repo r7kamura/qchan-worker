@@ -18,9 +18,11 @@ module QchanWorker
       end
     end
 
-    property :qchan_api_host do
-      raise Error, "You must set QchanWorker.configuration.qchan_api_host"
+    property :qchan_api_scheme do
+      "http"
     end
+
+    property :qchan_api_host
 
     property :qchan_api_port do
       80
