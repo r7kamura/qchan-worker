@@ -11,25 +11,27 @@ module QchanWorker
     end
 
     def perform
-      { output: output, status: status.to_i }
+      execute
+      report
     end
 
-    private
+    def execute
+      @result = Open3.capture2e(command)
+    end
 
     def command
       "set -e; "+ @attributes["command"].gsub(/\r\n|\n/, ";")
     end
 
     def output
-      result[0]
+      @result && @result[0]
     end
 
     def status
-      result[1]
+      @result && @result[1]
     end
 
-    def result
-      @result ||= Open3.capture2e(command)
+    def report
     end
   end
 end

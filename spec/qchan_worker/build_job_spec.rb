@@ -1,13 +1,13 @@
 require "spec_helper"
 
 describe QchanWorker::BuildJob do
-  describe ".perform" do
-    let(:attributes) do
-      { "command" => command }
+  describe "#execute" do
+    let(:job) do
+      described_class.new(attributes)
     end
 
-    let(:command) do
-      "echo hello world"
+    let(:attributes) do
+      { "command" => command }
     end
 
     context "with error" do
@@ -16,10 +16,11 @@ describe QchanWorker::BuildJob do
       end
 
       it "stops there" do
-        result = described_class.perform(attributes)
-        result[:status].should_not == 0
-        result[:output].should_not include("world")
-        result[:output].should include("fail")
+        job.execute
+        job.status.should_not == 0
+        job.output.should include("hello")
+        job.output.should include("fail")
+        job.output.should_not include("world")
       end
     end
 
@@ -28,14 +29,22 @@ describe QchanWorker::BuildJob do
         "echo hello\necho world"
       end
 
-      it "succeeds" do
-        described_class.perform(attributes).should == { output: "hello\nworld\n", status: 0 }
+      it "executes it" do
+        job.execute
+        job.status.should == 0
+        job.output.should == "hello\nworld\n"
       end
     end
 
-    context "with valid condition" do
-      it "executes given shell-script and returns its output & exit status" do
-        described_class.perform(attributes).should == { output: "hello world\n", status: 0 }
+    context "with oneline command" do
+      let(:command) do
+        "echo hello world"
+      end
+
+      it "executes it" do
+        job.execute
+        job.status.should == 0
+        job.output.should == "hello world\n"
       end
     end
   end
