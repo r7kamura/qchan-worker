@@ -1,5 +1,6 @@
 require "open3"
 require "mem"
+require "qchan_worker/builder/publisher"
 
 module QchanWorker
   class Builder
@@ -36,6 +37,7 @@ module QchanWorker
 
       def on_printed(line)
         lines << line
+        Publisher.publish(line: line)
       end
 
       def on_finished(thread)

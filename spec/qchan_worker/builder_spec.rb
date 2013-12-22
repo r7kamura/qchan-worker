@@ -14,7 +14,7 @@ describe QchanWorker::Builder do
   end
 
   describe ".perform" do
-    it "executes a given command and report the result to Qchan API as JSON" do
+    it "executes a given command with reporting" do
       stub_request(
         :put,
         "#{QchanWorker.configuration.qchan_api_host}/builds/#{build_id}",
