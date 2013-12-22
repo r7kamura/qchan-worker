@@ -8,7 +8,8 @@ module QchanWorker
     end
 
     def initialize(attributes)
-      @attributes = attributes
+      @id = attributes["id"]
+      @command = attributes["command"]
     end
 
     def perform
@@ -21,7 +22,7 @@ module QchanWorker
     end
 
     def command
-      "set -e; "+ @attributes["command"].gsub(/\r\n|\n/, ";")
+      "set -e; "+ @command.gsub(/\r\n|\n/, ";")
     end
 
     def output
@@ -41,7 +42,7 @@ module QchanWorker
     end
 
     def api_url
-      "http://#{api_host}:#{api_port}/builds/#{@attributes["id"]}"
+      "http://#{api_host}:#{api_port}/builds/#@id"
     end
 
     def api_host
