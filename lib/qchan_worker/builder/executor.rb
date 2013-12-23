@@ -33,8 +33,9 @@ module QchanWorker
       end
 
       def script
-        #"docker run -w #{tempdir}:/tempdir worker /bin/bash -e #{tempfile.path}"
-        "/bin/bash -e #{tempfile.path}"
+        str = "/bin/bash -e #{tempfile.path}"
+        str = "docker run -w #{tempdir}:/tempdir #{image} #{str}" if has_docker?
+        str
       end
 
       def on_printed(line)
@@ -62,6 +63,14 @@ module QchanWorker
         []
       end
       memoize :lines
+
+      def has_docker?
+        !`which docker`.empty?
+      end
+
+      def image
+        "worker"
+      end
     end
   end
 end
