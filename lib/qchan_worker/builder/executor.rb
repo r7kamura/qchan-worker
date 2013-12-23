@@ -34,7 +34,7 @@ module QchanWorker
 
       def script
         str = "/bin/bash -e #{tempfile.path}"
-        str = "docker run -w #{tempdir}:/tempdir #{image} #{str}" if has_docker?
+        str = "docker run -v #{tempdir}:/#{workspace} -w #{workspace} #{image} #{str}" if has_docker?
         str
       end
 
@@ -70,6 +70,10 @@ module QchanWorker
 
       def image
         "worker"
+      end
+
+      def workspace
+        "workspace"
       end
     end
   end
