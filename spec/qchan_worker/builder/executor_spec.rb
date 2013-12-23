@@ -21,10 +21,11 @@ describe QchanWorker::Builder::Executor do
       end
 
       it "executes a given command and returns exit status & output" do
-        described_class.execute(command).should == {
-          exit_status: 127,
-          output: "hello\n\nsh: fail: command not found\n",
-        }
+        result = described_class.execute(command)
+        result[:exit_status].should == 127
+        result[:output].should include("hello")
+        result[:output].should include("fail: command not found")
+        result[:output].should_not include("world")
       end
     end
   end

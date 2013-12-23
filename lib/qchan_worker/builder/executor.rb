@@ -1,6 +1,7 @@
-require "open3"
 require "mem"
+require "open3"
 require "qchan_worker/builder/publisher"
+require "tempfile"
 
 module QchanWorker
   class Builder
@@ -32,7 +33,8 @@ module QchanWorker
       end
 
       def script
-        "set -e; #{@command.strip.gsub(/\r\n|\n/, ?;)}"
+        #"docker run -w #{tempdir}:/tempdir worker /bin/bash -e #{tempfile.path}"
+        "/bin/bash -e #{tempfile.path}"
       end
 
       def on_printed(line)
@@ -42,6 +44,18 @@ module QchanWorker
 
       def on_finished(thread)
         @exit_status = thread.value.exitstatus
+      end
+
+      def tempfile
+        file = Tempfile.new("script")
+        file << @command
+        file.close
+        file
+      end
+      memoize :tempfile
+
+      def tempdir
+        File.dirname(tempfile)
       end
 
       def lines
