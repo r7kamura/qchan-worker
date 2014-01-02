@@ -15,12 +15,7 @@ describe QchanWorker::Builder do
 
   describe ".perform" do
     it "executes a given command with reporting" do
-      stub_request(
-        :put,
-        "#{QchanWorker.configuration.qchan_api_host}/builds/#{build_id}",
-      ).with(
-        body: { exit_status: 0, output: "hello world\n" }.to_json,
-      )
+      stub_request(:put, "#{QchanWorker.configuration.qchan_api_host}/builds/#{build_id}")
       described_class.perform(attributes)
     end
   end

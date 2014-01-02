@@ -9,15 +9,21 @@ module QchanWorker
 
       def initialize(attributes)
         @id = attributes[:id]
-        @output = attributes[:result][:output]
-        @exit_status = attributes[:result][:exit_status]
       end
 
-      def report
-        http_client.put(url, body, header)
+      def start
+        report(started_at: Time.now.iso8601)
+      end
+
+      def finish(result)
+        report(finished_at: Time.now.iso8601, exit_status: result[:exit_status], output: result[:output])
       end
 
       private
+
+      def report(attributes)
+        http_client.put(url, attributes.to_json, header)
+      end
 
       def http_client
         Faraday

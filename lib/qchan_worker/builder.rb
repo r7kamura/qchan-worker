@@ -3,6 +3,8 @@ require "qchan_worker/builder/reporter"
 
 module QchanWorker
   class Builder
+    include Mem
+
     def self.perform(*args)
       new(*args).perform
     end
@@ -13,7 +15,8 @@ module QchanWorker
     end
 
     def perform
-      report(execute)
+      reporter.start
+      reporter.finish(execute)
     end
 
     private
@@ -22,8 +25,9 @@ module QchanWorker
       Executor.execute(@command)
     end
 
-    def report(result)
-      Reporter.report(id: @id, result: result)
+    def reporter
+      Reporter.new(id: @id)
     end
+    memoize :reporter
   end
 end
