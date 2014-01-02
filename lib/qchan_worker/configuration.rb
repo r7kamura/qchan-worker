@@ -18,6 +18,10 @@ module QchanWorker
       end
     end
 
+    property :qchan_api_access_token do
+      ENV["QCHAN_API_ACCESS_TOKEN"]
+    end
+
     property :qchan_api_scheme do
       ENV["QCHAN_API_SCHEME"] || "http"
     end

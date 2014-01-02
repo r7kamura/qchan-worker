@@ -28,7 +28,7 @@ module QchanWorker
       end
 
       def header
-        { "Content-Type" => "application/json" }
+        { "Authorization" => "Bearer #{access_token}", "Content-Type" => "application/json" }
       end
 
       def url
@@ -40,12 +40,15 @@ module QchanWorker
       end
 
       def host
-        QchanWorker.configuration.qchan_api_host or
-          raise Error, "You must set QchanWorker.configuration.qchan_api_host"
+        QchanWorker.configuration.qchan_api_host
       end
 
       def port
         QchanWorker.configuration.qchan_api_port
+      end
+
+      def access_token
+        QchanWorker.configuration.qchan_api_access_token
       end
 
       class Error < StandardError
